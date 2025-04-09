@@ -2,9 +2,13 @@
     "name": "calculator-ci-js",
     "version": "1.0.0",
     "scripts": {
+        "start": "node server.js",
         "test": "jest --coverage"
     },
     "devDependencies": {
         "jest": "^29.7.0"
+    },
+    "dependencies": {
+        "express": "^5.1.0"
     }
 }
