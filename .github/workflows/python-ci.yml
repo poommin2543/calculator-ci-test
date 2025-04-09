@@ -32,11 +32,11 @@ jobs:
         run: |
           pytest --cov=calculator --cov-report=xml
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v2
-        with:
-          name: python-coverage-report
-          path: python/coverage.xml
+    #   - name: Upload coverage report
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: python-coverage-report
+    #       path: python/coverage.xml
 
 # name: Python CI
 
