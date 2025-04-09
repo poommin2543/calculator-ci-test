@@ -1,8 +1,11 @@
-
-name: Python CI
+name: Python CI with Coverage
 
 on:
   push:
+    paths:
+      - 'python/**'
+      - '.github/workflows/python-ci.yml'
+  pull_request:
     paths:
       - 'python/**'
       - '.github/workflows/python-ci.yml'
@@ -14,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -24,17 +27,53 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run Python tests
+      - name: Run tests with coverage
         working-directory: ./python
         run: |
-          pytest
-          - name: Run Python tests with coverage
-          working-directory: ./python
-          run: |
-            pytest --cov=calculator --cov-report=term-missing
-            - name: Save Python coverage
-            uses: actions/upload-artifact@v3
-            with:
-              name: python-coverage
-              path: python/htmlcov
+          pytest --cov=calculator --cov-report=xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-coverage-report
+          path: python/coverage.xml
+
+# name: Python CI
+
+# on:
+#   push:
+#     paths:
+#       - 'python/**'
+#       - '.github/workflows/python-ci.yml'
+
+# jobs:
+#   python-tests:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+
+#       - name: Install dependencies
+#         working-directory: ./python
+#         run: |
+#           pip install -r requirements.txt
+
+#       - name: Run Python tests
+#         working-directory: ./python
+#         run: |
+#           pytest
+#           - name: Run Python tests with coverage
+#           working-directory: ./python
+#           run: |
+#             pytest --cov=calculator --cov-report=term-missing
+#             - name: Save Python coverage
+#             uses: actions/upload-artifact@v3
+#             with:
+#               name: python-coverage
+#               path: python/htmlcov
           

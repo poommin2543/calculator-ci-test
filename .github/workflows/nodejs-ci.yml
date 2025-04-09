@@ -1,7 +1,11 @@
-name: Node.js CI
+name: Node.js CI with Coverage
 
 on:
   push:
+    paths:
+      - 'js/**'
+      - '.github/workflows/nodejs-ci.yml'
+  pull_request:
     paths:
       - 'js/**'
       - '.github/workflows/nodejs-ci.yml'
@@ -13,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -22,12 +26,46 @@ jobs:
         working-directory: ./js
         run: npm install
 
-      - name: Run JS tests
+      - name: Run JS tests with coverage
         working-directory: ./js
         run: npm test
-    
-      - name: Upload coverage report
+
+      - name: Upload JS coverage report
         uses: actions/upload-artifact@v3
         with:
-            name: js-coverage
-            path: js/coverage
+          name: js-coverage-report
+          path: js/coverage
+
+# name: Node.js CI
+
+# on:
+#   push:
+#     paths:
+#       - 'js/**'
+#       - '.github/workflows/nodejs-ci.yml'
+
+# jobs:
+#   nodejs-tests:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+
+#       - name: Install dependencies
+#         working-directory: ./js
+#         run: npm install
+
+#       - name: Run JS tests
+#         working-directory: ./js
+#         run: npm test
+    
+#       - name: Upload coverage report
+#         uses: actions/upload-artifact@v3
+#         with:
+#             name: js-coverage
+#             path: js/coverage
