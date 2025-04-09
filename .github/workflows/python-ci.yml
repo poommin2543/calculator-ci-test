@@ -1,27 +1,31 @@
+
 name: Python CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      - 'python/**'
+      - '.github/workflows/python-ci.yml'
 
 jobs:
-  build:
+  python-tests:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: ตั้งค่า Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: ติดตั้ง dependencies
+      - name: Install dependencies
+        working-directory: ./python
         run: |
           pip install -r requirements.txt
 
-      - name: รัน Unit Tests
+      - name: Run Python tests
+        working-directory: ./python
         run: |
           pytest
+
