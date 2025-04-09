@@ -31,7 +31,7 @@ jobs:
         run: npm test
 
       - name: Upload JS coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: js-coverage-report
           path: js/coverage
