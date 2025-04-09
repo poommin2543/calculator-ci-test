@@ -25,3 +25,9 @@ jobs:
       - name: Run JS tests
         working-directory: ./js
         run: npm test
+    
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+            name: js-coverage
+            path: js/coverage

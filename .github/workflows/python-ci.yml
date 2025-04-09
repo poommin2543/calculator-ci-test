@@ -28,4 +28,13 @@ jobs:
         working-directory: ./python
         run: |
           pytest
-
+          - name: Run Python tests with coverage
+          working-directory: ./python
+          run: |
+            pytest --cov=calculator --cov-report=term-missing
+            - name: Save Python coverage
+            uses: actions/upload-artifact@v3
+            with:
+              name: python-coverage
+              path: python/htmlcov
+          
