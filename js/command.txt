@@ -1,0 +1,57 @@
+ติดตั้ง kubectl
+Invoke-WebRequest -Uri "https://dl.k8s.io/release/v1.29.0/bin/windows/amd64/kubectl.exe" -OutFile "kubectl.exe"
+mkdir "C:\Program Files\kubectl"
+Move-Item .\kubectl.exe "C:\Program Files\kubectl\kubectl.exe"
+Control Panel > System > Advanced system settings
+Path ของ System variables
+C:\Program Files\kubectl
+kubectl version --client
+
+ติดตั้ง Minikube
+Invoke-WebRequest -Uri "https://github.com/kubernetes/minikube/releases/latest/download/minikube-windows-amd64.exe" -OutFile "minikube.exe"
+mkdir "C:\Program Files\minikube" -Force
+Move-Item .\minikube.exe "C:\Program Files\minikube\minikube.exe"
+Control Panel > System > Advanced system settings
+Path ของ System variables
+C:\Program Files\minikube
+minikube version
+Minikube พร้อม → เราจะรัน cluster ด้วย:
+minikube start --driver=docker
+ ตรวจสอบว่าระบบทำงาน
+ kubectl get nodes
+ใช้ Docker ของ Minikube
+& minikube -p minikube docker-env | Invoke-Expression
+docker build -t calculator-app:latest .   # สร้าง image ภายใน Minikube
+create 
+    > k8s-deployment.yaml
+    > k8s-service.yaml
+
+Deploy ไปยัง K8s Cluster
+kubectl apply -f k8s-deployment.yaml
+kubectl apply -f k8s-service.yaml
+ตรวจสอบสถานะ
+kubectl get pods                    # ดูว่า pod ทำงานหรือยัง
+kubectl describe pod <pod-name>    # รายละเอียด pod
+kubectl logs <pod-name>            # log จาก container
+
+เปิดเว็บผ่าน browser
+minikube service calculator-service
+
+Restart Deployment (กรณี build image ใหม่)
+kubectl rollout restart deployment calculator-deployment
+
+Scale App ด้วย Kubernetes
+kubectl scale deployment calculator-deployment --replicas=3
+
+ลบทุกอย่าง (Optional)
+kubectl delete -f k8s-deployment.yaml
+kubectl delete -f k8s-service.yaml
+
+Bonus: รวมทุกคำสั่งในไฟล์เดียว (deploy.sh)
+# deploy.sh
+eval $(minikube docker-env)
+docker build -t calculator-app:latest ./js
+kubectl apply -f ./js/k8s-deployment.yaml
+kubectl apply -f ./js/k8s-service.yaml
+kubectl rollout restart deployment calculator-deployment
+
